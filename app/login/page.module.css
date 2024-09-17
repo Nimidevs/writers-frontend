@@ -1,0 +1,116 @@
+.login {
+  display: flex;
+  min-height: 100vh;
+  min-width: 100vw;
+}
+.loginFormContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  flex: 1.7;
+}
+.containerHeader {
+  display: flex;
+  /* align-items: center; */
+  flex-direction: column;
+  gap: .8rem;
+  padding: 1.5rem 0 1rem 0;
+}
+.loginFormContainer form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 50%;
+}
+.inputContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.loginFormContainer form input {
+  border: 1px solid #929292;
+  color: #272626;
+  outline: none;
+  border-radius: 12px;
+  padding: 1rem 2rem;
+  font-size: medium;
+}
+.error{
+  color: red;
+  font-size: medium;
+  font-weight: 200;
+}
+.generalError{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.loginFormContainer form label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+.checkboxContainer {
+  display: flex;
+  justify-content: space-between;
+}
+form .checkboxContainer .checkboxLabel {
+  display: flex;
+  flex-direction: row;
+  gap: 0.6rem;
+}
+.buttonContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+.buttonContainer .signinButton {
+  background-color: #00aaa1;
+  color: #fff;
+  padding: 1rem 0rem;
+  border: none;
+  border-radius: 12px;
+  font-size: medium;
+}
+.icon{
+    font-size: xx-large;
+}
+.googleSignin {
+  border: 1px solid #929292;
+  color: #000000;
+  padding: .5rem 0rem;
+  border-radius: 12px;
+  font-size: medium;
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .6rem;
+}
+.Action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+.Action a {
+  text-decoration: none;
+  color: #ea454c;
+}
+
+.posterImage {
+  background-color: rgba(
+    181,
+    231,
+    229,
+    0.15
+  ); /* Use rgba to add opacity to the background color */
+  background-image: url("../../public/writer.jpg");
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  background-blend-mode: multiply; /* Optional, to blend image and color */
+  flex: 1.7;
+}
