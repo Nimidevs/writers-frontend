@@ -62,7 +62,7 @@ const FormComponent = () => {
     <div className={styles.loginFormContainer}>
       <div className={styles.containerHeader}>
         <h1>WELCOME BACK</h1>
-        <span>Welcome Back! Enter your details and lets get writing.</span>
+        <span className={styles.detailSpan}>Welcome Back! Enter your details and lets get writing.</span>
         <span className={`${styles.generalError} ${styles.error}`}>
           {errorState?.errors?.formErrors?.map((error, index) => (
             <div key={`form-error-${index}`}>{error}</div>
@@ -115,6 +115,7 @@ const FormComponent = () => {
         </div>
         <div className={styles.buttonContainer}>
           <SubmitBtn />
+          
           <button className={styles.googleSignin}>
             {" "}
             <FcGoogle className={styles.icon} /> Sign in with Google

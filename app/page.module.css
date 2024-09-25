@@ -33,13 +33,14 @@
 .writeIcon {
   font-size: xx-large;
   text-decoration: none;
-  color: black;
+  color: rgb(119, 118, 118);
   display: flex;
   align-items: center;
   gap: 0.3rem;
 }
 .writeIcon > span {
   font-size: large;
+  color: #333333;
 }
 .headerRight {
   display: flex;
@@ -47,6 +48,7 @@
   gap: 1.8rem;
 }
 .profile {
+  position: relative;
   width: 50px;
   height: 50px;
   background-color: #00aaa1; /* Your chosen background color */
@@ -58,7 +60,42 @@
   justify-content: center;
   border-radius: 50%;
   border: 1px solid #6edada;
+  cursor: pointer;
   text-transform: uppercase; /* Ensures initials are in uppercase */
+}
+.profiledropdown {
+  list-style-type: none;
+  color: #555555;
+  position: absolute;
+  top: 109%;
+  /* left: 0; */
+  /* display: none; */
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 1;
+  width: 15rem;
+  height: 20rem;
+  /* border-radius: 8px; */
+  border: 0.5px solid rgba(0, 170, 161, 0.2);
+  cursor: pointer;
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+}
+.profiledropdown li {
+  font-weight: normal;
+  font-size: medium;
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+}
+.logout {
+  color: rgb(148, 100, 100);
+  /* justify-self: flex-end; */
+  margin-top: auto;
+}
+.logOutIcon{
+  font-size: 30px;
 }
 
 /*Main*/
@@ -88,27 +125,40 @@
   flex-direction: column;
   gap: 2rem;
 }
-.post{
+.loadingStateImage {
+  align-self: center;
+  justify-self: center;
+}
+.fetchError {
+  align-self: center;
+  justify-self: center;
+  font-size: x-large;
+  font-weight: 400;
+}
+.postLink{
+  text-decoration: none;
+}
+.post {
   display: flex;
   flex-direction: column;
-  gap: .9rem;
+  gap: 0.9rem;
 }
-.postTitle{
+.postTitle {
   color: #222222;
 }
-.postContent{
+.postContent {
   display: flex;
   flex-direction: column;
-  gap: .7rem;
+  gap: 0.7rem;
 }
-.postMeta{
+.postMeta {
   display: flex;
   align-items: center;
-  gap: .7rem;
+  gap: 0.7rem;
   color: #555555;
   font-size: 10;
 }
-.authorIcon{
+.authorIcon {
   width: 25px;
   height: 25px;
   background-color: #00aaa1; /* Your chosen background color */
@@ -122,25 +172,24 @@
   border: 1px solid #6edada;
   text-transform: uppercase; /* Ensures initials are in uppercase */
 }
-.verticalLine{
+.verticalLine {
   width: 1px;
   height: 20px;
   background-color: #999999;
 }
-.postDate{
+.postDate {
   display: flex;
   align-items: center;
-  gap: .3rem;
+  gap: 0.3rem;
 }
-.postDateCalendarIcon{
-color: #00aaa1;
+.postDateCalendarIcon {
+  color: #00aaa1;
 }
-.postDescription{
+.postDescription {
   color: #555555;
   font-size: 15;
   max-width: 580px;
 }
-
 
 /*footer*/
 

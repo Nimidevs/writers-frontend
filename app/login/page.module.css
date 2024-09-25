@@ -18,6 +18,12 @@
   gap: .8rem;
   padding: 1.5rem 0 1rem 0;
 }
+.containerHeader > h1{
+  text-align: center;
+}
+.detailSpan{
+  color: #636364;
+}
 .loginFormContainer form {
   display: flex;
   flex-direction: column;
