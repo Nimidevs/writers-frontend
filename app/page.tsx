@@ -9,12 +9,12 @@ import Post from "./post";
 import loadingImage from "../public/loading2.gif";
 import { useEffect, useState } from "react";
 import User from "./types";
-import { createInitials } from "./types";
+import { getInitials } from "./types";
 
 export default function Home() {
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<string | null>(null);
-  const [posts, setPosts] = useState([]);
+  const [posts, setPosts] = useState<Post[]>([]);
   const [user, setUser] = useState<User | null>(null);
   const [initials, setInitials] = useState("");
 
@@ -25,7 +25,7 @@ export default function Home() {
     const token = tokenString ? JSON.parse(tokenString) : null;
     const user = userString ? JSON.parse(userString) : null;
 
-    const initials = createInitials(user.first_name, user.last_name);
+    const initials = getInitials();
 
     setUser(user);
     setInitials(initials);
@@ -51,8 +51,11 @@ export default function Home() {
         }
 
         const result = await fetchResults.json();
-        if (result.success) {
+        console.log(result);
+        if (result.success && result.posts.length > 0) {
           setPosts(result.posts);
+        } else {
+          setPosts([]);
         }
       } catch (error) {
         console.log("Error fetching writer's posts:", error);
@@ -64,9 +67,13 @@ export default function Home() {
 
     fetchWritersPosts(token);
   }, []);
+
+  const postDeleted = (postId: string) => {
+    setPosts((prevPosts) => prevPosts.filter((post) => post._id !== postId))
+  };
   return (
     <div className={styles.container}>
-      <Header initials={initials} />
+      <Header />
 
       <main className={styles.main}>
         <h1>
@@ -83,12 +90,19 @@ export default function Home() {
               alt="loading"
               className={styles.loadingStateImage}
             ></Image>
-          ) : errors !== null ? (
+          ) : errors ? (
             <div className={styles.fetchError}>{errors}</div>
-          ) : (
+          ) : posts.length > 0 ? (
             posts?.map((post, index) => (
-              <Post key={index} post={post} initials={initials} />
+              <Post
+                key={post._id}
+                post={post}
+                initials={initials}
+                onDeletePost={postDeleted}
+              />
             ))
+          ) : (
+            <div className={styles.emptyState}>No Posts found.</div>
           )}
         </div>
       </main>

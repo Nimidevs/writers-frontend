@@ -47,6 +47,14 @@
   align-items: center;
   gap: 1.8rem;
 }
+.publish {
+  background-color: #00aaa1;
+  padding: 12px 18px;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  font-size: larger;
+}
 .profile {
   position: relative;
   width: 50px;
@@ -94,7 +102,7 @@
   /* justify-self: flex-end; */
   margin-top: auto;
 }
-.logOutIcon{
+.logOutIcon {
   font-size: 30px;
 }
 
@@ -135,13 +143,20 @@
   font-size: x-large;
   font-weight: 400;
 }
-.postLink{
+.emptyState {
+  align-self: center;
+  justify-self: center;
+  font-size: x-large;
+  font-weight: 400;
+}
+.postLink {
   text-decoration: none;
 }
 .post {
   display: flex;
   flex-direction: column;
   gap: 0.9rem;
+  max-width: fit-content;
 }
 .postTitle {
   color: #222222;
@@ -150,6 +165,12 @@
   display: flex;
   flex-direction: column;
   gap: 0.7rem;
+}
+.postDetails {
+  display: flex;
+  align-items: center;
+  gap: 5rem;
+  /* justify-content: space-between; */
 }
 .postMeta {
   display: flex;
@@ -185,10 +206,48 @@
 .postDateCalendarIcon {
   color: #00aaa1;
 }
+.postMethodsContainer {
+  position: relative;
+}
+.postMethods {
+  background-color: transparent;
+  border: none;
+  font-size: x-large;
+  outline: none;
+}
 .postDescription {
+  text-wrap: wrap;
   color: #555555;
   font-size: 15;
   max-width: 580px;
+  background-color: red;
+  color: red;
+}
+
+.postDropdown {
+  list-style-type: none;
+  color: #555555;
+  position: absolute;
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 1;
+  width: 10rem;
+  height: 12rem;
+  border: 0.5px solid rgba(0, 170, 161, 0.2);
+  cursor: pointer;
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  padding-left: 1.1rem;
+}
+.postDropdown li button {
+  padding: 0.5rem 0.8rem;
+  background-color: #00aaa1;
+  border: none;
+  border-radius: 4px;
+  color: #fff;
+  font-size: larger;
 }
 
 /*footer*/
