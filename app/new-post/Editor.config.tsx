@@ -6,9 +6,11 @@ import React, {
   useRef,
   useState,
 } from "react";
+
 import { Delta } from "quill/core";
 import Quill from "quill";
 import styles from "./page.module.css";
+import { toast } from "react-toastify";
 
 interface EditorProps {
   defaultValue: Delta; // Type for Delta
@@ -24,8 +26,6 @@ interface ToolbarModule {
 // Editor is an uncontrolled React component
 const Editor = forwardRef(
   ({ defaultValue, className, placeholder }: EditorProps, ref) => {
-    const [isUploading, setIsUploading] = useState(false);
-    const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const containerRef = useRef<HTMLDivElement | null>(null);
     const defaultValueRef = useRef(defaultValue);
 
@@ -72,19 +72,21 @@ const Editor = forwardRef(
             const token = tokenString ? JSON.parse(tokenString) : null;
 
             if (file?.size > 7 * 1024 * 1024) {
-              setErrorMessage("File is too large, ensure file is below 7mb");
-              setTimeout(() => {
-                setErrorMessage(null);
-              }, 3000);
+              toast.error("File is too large, ensure file is below 7mb", {
+                position: "top-center",
+              });
               return;
             }
 
             const formData = new FormData();
             formData.append("image", file);
+            let imageUploadNotif;
 
             try {
               console.log(formData);
-              setIsUploading(true);
+              imageUploadNotif = toast.loading(
+                "please wait image is uploading..."
+              );
               const response = await fetch(
                 `http://localhost:8080/api/posts/image/upload`,
                 {
@@ -102,37 +104,63 @@ const Editor = forwardRef(
               if (imageUrl) {
                 const range = quill.getSelection();
                 if (range) {
+                  toast.update(imageUploadNotif, {
+                    position: "top-center",
+                    render: "Image Uploaded",
+                    type: "success",
+                    isLoading: false,
+                    autoClose: 3000
+                  });
                   quill.insertEmbed(range.index, "image", imageUrl);
                 } else {
-                  setErrorMessage(
-                    "Please place the cursor where you want to insert the image."
-                  );
-                  setTimeout(() => setErrorMessage(null), 3000);
+                  toast.update(imageUploadNotif, {
+                    position: "top-center",
+                    render:
+                      "Please place the cursor where you want to insert the image.",
+                    type: "error",
+                    isLoading: false,
+                    autoClose: 3000
+                  });
                 }
               } else {
+                toast.update(imageUploadNotif, {
+                  position: "top-center",
+                  render: "Image failed to upload, please try again",
+                  type: "error",
+                  isLoading: false,
+                  autoClose: 3000
+                });
                 throw new Error("Image upload failed.");
               }
             } catch (error) {
-              if (error instanceof Error) {
-                setErrorMessage(
-                  error.message || "Upload failed. Please try again."
-                );
+              if (imageUploadNotif) {
+                toast.update(imageUploadNotif, {
+                  position: "top-center",
+                  render: "An error occurred while uploading the image.",
+                  type: "error",
+                  isLoading: false,
+                  autoClose: 3000
+                });
               } else {
-                setErrorMessage("An unknown error occurred.");
+                toast.error(
+                  "An error occurred while uploading the image. Please try again.",
+                  {
+                    position: "top-center",
+                  }
+                );
               }
-              setTimeout(() => setErrorMessage(null), 3000);
             } finally {
-              setIsUploading(false);
+              
             }
           } else {
-            setErrorMessage("Invalid file type. Please select an image.");
-            setTimeout(() => setErrorMessage(null), 3000);
+            toast.error("Invalid file type, Please select an Image", {
+              position: "top-center",
+            });
           }
         };
 
         input.click();
       });
-
 
       if (defaultValueRef.current) {
         quill.setContents(defaultValueRef.current);
@@ -150,14 +178,6 @@ const Editor = forwardRef(
 
     return (
       <div className={styles.editor} ref={containerRef}>
-        {isUploading && (
-          <div className={styles.loadingOverlay}>Uploading please wait....</div>
-        )}
-        {errorMessage && (
-          <div className={styles.overlay}>
-            <p>{errorMessage}</p>
-          </div>
-        )}
       </div>
     );
   }

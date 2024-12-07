@@ -216,12 +216,11 @@
   outline: none;
 }
 .postDescription {
-  text-wrap: wrap;
-  color: #555555;
-  font-size: 15;
+  word-wrap: break-word; /* Allows breaking unbroken strings into a new line */
+  overflow-wrap: break-word; /* For better browser compatibility */
   max-width: 580px;
-  background-color: red;
-  color: red;
+  font-size: 15px;
+  color: #555555;
 }
 
 .postDropdown {

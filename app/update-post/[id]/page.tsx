@@ -1,11 +1,14 @@
 "use client";
+import withAuth from "@/app/Auth/withAuth";
 import { Categoriesmodal } from "@/app/components/categories modal/categories-modal";
 import EditorComponent from "@/app/components/editor-component/editor";
+import usePostEditor from "@/app/components/usePostEditor-hook/usePostEditor";
 import Header from "@/app/header";
 import { getToken } from "@/app/helpers/get-token-helper";
-import { useParams } from "next/navigation";
-import Quill, { Delta } from "quill/core";
-import { useEffect, useRef, useState } from "react";
+import { useParams, useRouter } from "next/navigation";
+import { Delta } from "quill/core";
+import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 interface postToUpdate {
   titleDelta: Delta;
@@ -13,24 +16,21 @@ interface postToUpdate {
 }
 
 const UpdatePost = () => {
+  const {
+    postPreviewObj,
+    stringifiedDelta,
+    textData,
+    imagePreviewArray,
+    quillRef,
+    quillTitleRef,
+    onPublish,
+  } = usePostEditor();
+
+  const router = useRouter();
+
   const [postToUpdate, setPostToUpdate] = useState<postToUpdate>();
   const [currentCategories, setcurrentCategories] = useState();
   const [showCategoriesModal, setShowCategoriesModal] = useState(false);
-  const [postPreviewObj, setPostPreviewObj] = useState({
-    title: "",
-    description: "",
-  });
-  const [stringifiedDelta, setStringifiedDelta] = useState({
-    postDelta: "",
-    titleDelta: "",
-  });
-  const [textData, setTextData] = useState({
-    postText: "",
-    titleText: "",
-  });
-  const [imagePreviewArray, setImagePreviewArray] = useState<string[]>([]);
-  const quillRef = useRef<Quill | null>();
-  const quillTitleRef = useRef<Quill | null>();
   const params = useParams();
   useEffect(() => {
     const getPostToUpdate = async () => {
@@ -55,67 +55,28 @@ const UpdatePost = () => {
         });
         setcurrentCategories(data.post.categories);
       } catch (error) {
-        console.log("there was an error getting post");
+        console.log(error);
+        toast.error("Post to update could'nt be Fetched, Try again later");
+        router.push("/");
       }
     };
 
     getPostToUpdate();
-  }, [params.id]);
-
-  const onPublish = () => {
-    const postDeltaJson = JSON.stringify(quillRef?.current?.getContents());
-
-    const titleDeltaJson = JSON.stringify(quillTitleRef.current?.getContents());
-
-    const post_Text = quillRef.current?.getText();
-    const title_Text = quillTitleRef.current?.getText();
-
-    const title_preview = `${title_Text}`;
-    const subtitle_preview = `${post_Text?.substring(0, 200)}`;
-    setPostPreviewObj({ title: title_preview, description: subtitle_preview });
-
-    setStringifiedDelta({
-      postDelta: postDeltaJson,
-      titleDelta: titleDeltaJson,
-    });
-    setTextData({
-      postText: `${post_Text}`,
-      titleText: `${title_Text}`,
-    });
-    handleContentChange();
-    setShowCategoriesModal(true);
-  };
+  }, [params.id, router]);
 
   const hideModal = () => {
     setShowCategoriesModal(false);
   };
-  const getImageUrlsFromContent = (delta: Delta): string[] => {
-    return delta.ops
-      .map((op) => {
-        // Check if op.insert is an object and contains the "image" key
-        if (
-          typeof op.insert === "object" &&
-          op.insert !== null &&
-          "image" in op.insert
-        ) {
-          return (op.insert as { image: string }).image;
-        }
-        return null;
-      })
-      .filter((url): url is string => url !== null); // Filter out null values
-  };
-
-  const handleContentChange = () => {
-    if (quillRef.current) {
-      const delta = quillRef.current.getContents();
-      const imageUrls = getImageUrlsFromContent(delta);
-      setImagePreviewArray(imageUrls);
-    }
-  };
 
   return (
     <div>
-      <Header showWrite={false} onPublish={onPublish} />
+      <Header
+        showWrite={false}
+        onPublish={() => {
+          onPublish();
+          setShowCategoriesModal(true);
+        }}
+      />
 
       <EditorComponent
         titleRef={quillTitleRef}
@@ -142,4 +103,4 @@ const UpdatePost = () => {
   );
 };
 
-export default UpdatePost;
+export default withAuth(UpdatePost);

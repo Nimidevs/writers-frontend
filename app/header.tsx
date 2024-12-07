@@ -7,6 +7,7 @@ import { IoMdPerson } from "react-icons/io";
 import { VscSignOut } from "react-icons/vsc";
 import useClickOutside from "./removeDropdown";
 import { getInitials } from "./types";
+import { useRouter } from "next/navigation";
 
 interface HeaderProps {
   showWrite?: boolean;
@@ -17,6 +18,7 @@ const Header: React.FC<HeaderProps> = ({ showWrite, onPublish }) => {
   const [dropdown, setDropdown] = useState(false);
   const dropdownContainerRef = useRef(null);
   const [initials, setInitials] = useState("");
+  const router = useRouter()
 
   useEffect(() => {
     const initials = getInitials();
@@ -26,6 +28,11 @@ const Header: React.FC<HeaderProps> = ({ showWrite, onPublish }) => {
   useClickOutside(dropdownContainerRef, () => {
     setDropdown(false);
   });
+
+  const signOut = () => {
+    localStorage.clear()
+    router.push('/login')
+  }
   
   return (
     <header className={styles.header}>
@@ -72,7 +79,7 @@ const Header: React.FC<HeaderProps> = ({ showWrite, onPublish }) => {
                 <IoMdPerson />
                 Profile
               </li>
-              <li className={styles.logout}>
+              <li className={styles.logout} onClick={signOut}>
                 {" "}
                 <VscSignOut className={styles.logOutIcon} />
                 Sign Out

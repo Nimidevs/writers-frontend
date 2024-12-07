@@ -5,6 +5,7 @@ import styles from "./page.module.css";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { getToken } from "./helpers/get-token-helper";
+import { toast } from "react-toastify";
 
 interface postProp {
   post: Post;
@@ -58,11 +59,14 @@ const Post: React.FC<postProp> = ({ post, initials, onDeletePost }) => {
       );
       if (response.ok) {
         const data = await response.json();
+        toast.success(action === 'publish' ? 'Post Was Successfully Published' : "Post Was Successfully Unublished")
         setPosts(data.post); // Update the local state
       } else {
+        toast.error('Couldnt change public status')
         console.error("Failed to toggle publish status:", response.statusText);
       }
     } catch (error) {
+      toast.error('Failed to change published status, try again later')
       console.error("An error occurred:", error);
     }
   }
@@ -79,11 +83,14 @@ const Post: React.FC<postProp> = ({ post, initials, onDeletePost }) => {
         }
       );
       if (response.ok) {
+        toast.success("Post Was Deleted Successfully")
         onDeletePost(postId);
       } else {
+        toast.error("Couldn't delete Post")
         console.error("Failed to Delete Post:", response.statusText);
       }
     } catch (error) {
+      toast.error("Failed to delete post, try again later")
       console.error("An error occurred:", error);
     }
   }

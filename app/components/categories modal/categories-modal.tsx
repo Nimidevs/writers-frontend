@@ -1,3 +1,4 @@
+"use client";
 import Image from "next/image";
 import styles from "./styles.module.css";
 import { useEffect, useState } from "react";
@@ -6,6 +7,7 @@ import Select, { MultiValue } from "react-select";
 import { useRouter } from "next/navigation";
 import { getToken } from "@/app/helpers/get-token-helper";
 import { getUser } from "@/app/helpers/get-user-helper";
+import { toast } from "react-toastify";
 
 export const Categoriesmodal: React.FC<modalProps> = ({
   postImage = [],
@@ -26,7 +28,6 @@ export const Categoriesmodal: React.FC<modalProps> = ({
   const [selectedCategories, setSelectedCategories] = useState<
     options[] | null
   >(null);
-  const [defaultCategories, setDefaultCategories] = useState<options[]>([]);
   const [titlePreview, setTitlePreview] = useState("");
   const [descriptionPreview, setDescriptionPreview] = useState("");
   const router = useRouter();
@@ -69,7 +70,7 @@ export const Categoriesmodal: React.FC<modalProps> = ({
               option.value && existingCategories.includes(option?.value)
           );
           console.log(defaultOptions);
-          setSelectedCategories(defaultOptions)
+          setSelectedCategories(defaultOptions);
         }
       } catch (error) {
         displayErrorMessage(
@@ -101,7 +102,7 @@ export const Categoriesmodal: React.FC<modalProps> = ({
       ?.map((category) => category.value)
       .filter((value): value is string => value !== undefined);
 
-      console.log(categories)
+    console.log(categories);
 
     let payload: Uploadpayload = {
       title: titleDelta,
@@ -130,11 +131,22 @@ export const Categoriesmodal: React.FC<modalProps> = ({
       });
 
       if (response.ok) {
+        toast.success(
+          update ? "Post Updated Successfully" : "Post Uploaded Successfully"
+        );
         router.push("/");
       } else {
+        toast.error(
+          update ? "Post could not be Updated" : "Post could not be Uploaded"
+        );
         displayErrorMessage("Post could not be uploaded, Try again later.");
       }
     } catch (error) {
+      toast.error(
+        update
+          ? "Post could not be Updated, Try again Later"
+          : "Post could not be Uploaded, Try again Later"
+      );
       console.log(error);
     }
   };

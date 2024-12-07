@@ -1,5 +1,5 @@
 "use client";
-
+import { toast } from "react-toastify";
 import Image from "next/image";
 import styles from "./page.module.css";
 import Link from "next/link";
@@ -10,8 +10,9 @@ import loadingImage from "../public/loading2.gif";
 import { useEffect, useState } from "react";
 import User from "./types";
 import { getInitials } from "./types";
+import withAuth from "./Auth/withAuth";
 
-export default function Home() {
+function Home() {
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<string | null>(null);
   const [posts, setPosts] = useState<Post[]>([]);
@@ -55,11 +56,14 @@ export default function Home() {
         if (result.success && result.posts.length > 0) {
           setPosts(result.posts);
         } else {
+          toast.info('No Posts Found')
           setPosts([]);
         }
       } catch (error) {
+        setPosts([]);
+        toast.error('Failed to fetch posts. Please Try again later')
         console.log("Error fetching writer's posts:", error);
-        setErrors("Failed to fetch posts. Please Try again later");
+        // setErrors("Failed to fetch posts. Please Try again later");
       } finally {
         setLoading(false);
       }
@@ -93,7 +97,7 @@ export default function Home() {
           ) : errors ? (
             <div className={styles.fetchError}>{errors}</div>
           ) : posts.length > 0 ? (
-            posts?.map((post, index) => (
+            posts?.map((post) => (
               <Post
                 key={post._id}
                 post={post}
@@ -111,3 +115,4 @@ export default function Home() {
     </div>
   );
 }
+export default withAuth(Home)

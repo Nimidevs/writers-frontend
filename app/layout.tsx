@@ -1,6 +1,9 @@
+// "use client";
 import type { Metadata } from "next";
 import { Noto_Sans } from "next/font/google";
 import "./globals.css";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const noto = Noto_Sans({ subsets: ["latin"] });
 
@@ -16,7 +19,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={noto.className}>{children}</body>
+      <body className={noto.className}>
+        {children}
+        <ToastContainer theme="colored"/>
+      </body>
     </html>
   );
 }

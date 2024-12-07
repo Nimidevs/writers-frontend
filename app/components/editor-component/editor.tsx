@@ -1,3 +1,4 @@
+'use client'
 import Editor from "@/app/new-post/Editor.config";
 import "../../../node_modules/quill/dist/quill.bubble.css";
 import Quill, { Delta } from "quill/core";
