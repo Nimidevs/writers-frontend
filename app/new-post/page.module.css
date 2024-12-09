@@ -2,6 +2,9 @@
   margin: 3rem auto;
   max-width: 50rem;
 }
+.editor{
+  position: relative;
+}
 
 .titleEditorContainer .titleEditor{
   font-size: 1.8rem ;
